@@ -11,6 +11,12 @@ const userController = {
       res.status(500).json({ server_error: error });
     }
   },
+
+  register: (req, res) => {
+    const { fullname, email, password } = req.body;
+
+    res.status(201).json({ data: { fullname, email, password } });
+  },
 };
 
 module.exports = userController;

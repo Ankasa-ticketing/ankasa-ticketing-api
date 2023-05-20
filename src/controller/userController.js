@@ -60,7 +60,8 @@ const userController = {
   },
 
   editProfile: async (req, res) => {
-    const { fullname, email, phone, city, address, post_code } = req.body;
+    const { fullname, email, phone, city, address, post_code, card_number } =
+      req.body;
     const dataToken = process.env.ACCESS_TOKEN;
     const { token } = req.headers;
     const user = jwt.verify(token, dataToken);
@@ -73,7 +74,8 @@ const userController = {
         phone,
         city,
         address,
-        post_code
+        post_code,
+        card_number
       );
       res.status(200).json({ msg: "berhasil memperbaharui profile" });
     } catch (error) {

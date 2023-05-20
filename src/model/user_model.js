@@ -33,6 +33,38 @@ const userModel = {
       );
     });
   },
+
+  updateProfile: (
+    id,
+    fullname,
+    email,
+    phone,
+    city,
+    address,
+    post_code,
+    card_number
+  ) => {
+    return new Promise((resolve, reject) => {
+      DB.query(
+        `UPDATE users SET fullname = '${fullname}', email = '${email}', phone = '${phone}', city='${city}', address = '${address}', post_code = ${post_code}, card_number='${card_number}'  WHERE id = '${id}'`,
+        (err, result) => {
+          if (err) reject(err);
+          resolve(result);
+        }
+      );
+    });
+  },
+  updatePhoto: (id, { photo }) => {
+    return new Promise((resolve, reject) => {
+      DB.query(
+        `UPDATE users SET photo = '${photo}' WHERE id = '${id}'`,
+        (err, result) => {
+          if (err) reject(err);
+          resolve(result);
+        }
+      );
+    });
+  },
 };
 
 module.exports = userModel;

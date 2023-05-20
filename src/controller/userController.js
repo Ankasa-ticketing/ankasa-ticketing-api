@@ -58,6 +58,49 @@ const userController = {
       console.log(error);
     }
   },
+
+  editProfile: async (req, res) => {
+    const { fullname, email, phone, city, address, post_code, card_number } =
+      req.body;
+    const dataToken = process.env.ACCESS_TOKEN;
+    const { token } = req.headers;
+    const user = jwt.verify(token, dataToken);
+    if (user.role !== "user") return res.sendStatus(403);
+    try {
+      await userModel.updateProfile(
+        user.id,
+        fullname,
+        email,
+        phone,
+        city,
+        address,
+        post_code,
+        card_number
+      );
+      res.status(200).json({ msg: "berhasil memperbaharui profile" });
+    } catch (error) {
+      res.json(error);
+      console.log(error);
+      res.json({ msg: "gagal memperbaharui profile" });
+    }
+  },
+
+  editPhoto: async (req, res) => {
+    const photo = req.file.filename;
+    const data = { photo };
+    const dataToken = process.env.ACCESS_TOKEN;
+    const { token } = req.headers;
+    const user = jwt.verify(token, dataToken);
+    if (user.role !== "user") return res.sendStatus(403);
+    try {
+      await userModel.updatePhoto(user.id, data);
+      res.status(200).json({ msg: "berhasil memperbaharui photo profile" });
+    } catch (error) {
+      res.json(error);
+      console.log(error);
+      res.json({ msg: "gagal memperbaharui photo profile" });
+    }
+  },
 };
 
 module.exports = userController;

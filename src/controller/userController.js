@@ -51,6 +51,10 @@ const userController = {
           expiresIn: "1d",
         }
       );
+      res.cookie("accessToken", accessToken, {
+        httpOnly: true,
+        maxAge: 24 * 60 * 60 * 1000,
+      });
       res.status(200).json({ fullname, email, accessToken });
     } catch (error) {
       res.status(400).json({ msg: "email tidak ditemukan!", errors: error });
@@ -59,22 +63,20 @@ const userController = {
   },
 
   editProfile: async (req, res) => {
-    const { fullname, email, phone, city, address, post_code, card_number } =
-      req.body;
-    const dataToken = process.env.ACCESS_TOKEN;
-    const { token } = req.headers;
-    const user = jwt.verify(token, dataToken);
-    if (user.role !== "user") return res.sendStatus(403);
+    const { fullname, email, phone, city, address, post_code } = req.body;
+
+    const token = req.cookies.accesstoken;
+    const user = jwt.decode(token, { complete: true });
+
     try {
       await userModel.updateProfile(
-        user.id,
+        user.payload.id,
         fullname,
         email,
         phone,
         city,
         address,
-        post_code,
-        card_number
+        post_code
       );
       res.status(200).json({ msg: "berhasil memperbaharui profile" });
     } catch (error) {

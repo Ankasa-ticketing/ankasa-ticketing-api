@@ -1,17 +1,15 @@
 const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
-exports.verifyToken = (req, res, next) => {
-  const authHeader = req.get("authorization");
-  const token = authHeader.split(" ")[1];
+const verifyToken = (req, res, next) => {
+  const authHeader = req.headers["authorization"];
+  const token = authHeader && authHeader.split(" ")[1];
 
-  console.log(authHeader);
-  console.log(token);
   if (token == null) return res.sendStatus(401);
 
   jwt.verify(token, process.env.ACCESS_TOKEN, (err, decoded) => {
     if (err) return res.sendStatus(403);
-    req.id = decoded.id;
-
+    req.email = decoded.email;
     next();
   });
 };
@@ -28,14 +26,16 @@ exports.verifyToken = (req, res, next) => {
 //   });
 // };
 
-exports.isUser = (req, res, next) => {
-  const token = req.get("authorization").split(" ")[1];
+// exports.isUser = (req, res, next) => {
+//   const token = req.get("authorization").split(" ")[1];
 
-  jwt.verify(token, process.env.ACCESS_TOKEN, (err, decoded) => {
-    if (err) return res.sendStatus(403);
-    req.id = decoded.id;
+//   jwt.verify(token, process.env.ACCESS_TOKEN, (err, decoded) => {
+//     if (err) return res.sendStatus(403);
+//     req.id = decoded.id;
 
-    if (decoded.role !== "user") return res.sendStatus(403);
-    next();
-  });
-};
+//     if (decoded.role !== "user") return res.sendStatus(403);
+//     next();
+//   });
+// };
+
+module.exports = { verifyToken };

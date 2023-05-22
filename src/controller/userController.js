@@ -2,12 +2,10 @@ const userModel = require("../model/user_model");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-const { findAll } = userModel;
-
 const userController = {
   fetchUsers: async (req, res) => {
     try {
-      const users = await findAll();
+      const users = await userModel.findAll();
       res.status(200).json({ data: users });
     } catch (error) {
       res.status(500).json({ server_error: error });
@@ -41,6 +39,7 @@ const userController = {
     try {
       const user = await userModel.findByEmail(email);
       const match = await bcrypt.compare(password, user.password);
+      console.log(match);
 
       if (!match) return res.status(400).json({ msg: "password salah!" });
 

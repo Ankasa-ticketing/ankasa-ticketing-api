@@ -8,18 +8,10 @@ const helmet = require("helmet");
 
 const port = 5000;
 
-app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
+app.use(cors({ credentials: true }));
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(router);
 app.use(helmet());
 
 app.listen(port, () => console.log(`serve on port: ${port}`));
-
-// app.get("/", (req, res) => {
-//   res.send("Hello Semuanyaa!!!");
-// });
-
-// app.listen(port, () => {
-//   console.log(`Example app listening on port ${port}`);
-// });

@@ -10,7 +10,7 @@ const airlinesModel = {
     });
   },
 
-  insert: ({ name, image }) => {
+  insert: (name, image) => {
     return new Promise((resolve, reject) => {
       DB.query(
         `INSERT INTO airlines (name,image) VALUES ('${name}','${image}')`,

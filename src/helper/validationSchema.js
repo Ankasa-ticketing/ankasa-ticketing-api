@@ -19,3 +19,7 @@ exports.updateProfileSchema = Joi.object().keys({
   address: Joi.string().required(),
   post_code: Joi.string().required(),
 });
+
+exports.insertAirline = Joi.object().keys({
+  name: Joi.string().required(),
+});

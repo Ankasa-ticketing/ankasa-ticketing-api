@@ -1,4 +1,6 @@
+const { generateRandomString } = require("../helper/generate_random_string");
 const airlinesModel = require("../model/airlines_model");
+const { uploadFile, MinioClient } = require("../utils/object_storage");
 // const jwt = require("jsonwebtoken");
 
 const airlinesController = {
@@ -12,21 +14,26 @@ const airlinesController = {
   },
 
   insertAirlines: async (req, res) => {
-    try {
-      const { name } = req.body;
-      const image = req.file.filename;
-      const data = { name, image };
+    const { name } = req.body;
+    const file = req.file.path;
 
-      airlinesModel
-        .insert(data)
-        .then((result) => {
-          res.status(201).json({ name, image });
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+    try {
+      const image_url = generateRandomString(10);
+      uploadFile(file, `airlines/${image_url}`);
+
+      const presignedUrl = await MinioClient.presignedGetObject(
+        "ankasa-ticketing",
+        `airlines/${image_url}`
+      );
+
+      await airlinesModel.insert(name, presignedUrl);
+
+      res.status(201).json({
+        name,
+        url: presignedUrl,
+      });
     } catch (error) {
-      console.log(error);
+      res.status(400).json({ msg: "gagal tambah data!", error });
     }
   },
 

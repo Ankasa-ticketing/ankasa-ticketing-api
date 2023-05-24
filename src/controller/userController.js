@@ -29,6 +29,7 @@ const userController = {
             console.log(err);
           });
       });
+      // await userModel.insertUsers(data);
     } catch (error) {
       console.log(error);
     }
@@ -51,6 +52,7 @@ const userController = {
           expiresIn: "1d",
         }
       );
+      // set cookie
       res.cookie("accessToken", accessToken, {
         httpOnly: true,
         maxAge: 24 * 60 * 60 * 1000,

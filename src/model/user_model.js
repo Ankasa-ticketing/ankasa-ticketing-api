@@ -11,9 +11,11 @@ const userModel = {
   },
 
   insertUsers: ({ fullname, email, password }) => {
+    const photo =
+      "https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIyLTA1L3Y5MzctYWV3LTEzOS5qcGc.jpg";
     return new Promise((resolve, reject) => {
       DB.query(
-        `INSERT INTO users (fullname, email, password, role) VALUES ('${fullname}','${email}','${password}','user')`,
+        `INSERT INTO users (fullname, email, password, role, photo) VALUES ('${fullname}','${email}','${password}','user', '${photo}')`,
         (err, result) => {
           if (err) reject(err);
           resolve(result);

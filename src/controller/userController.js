@@ -23,7 +23,10 @@ const userController = {
         userModel
           .insertUsers(data)
           .then((result) => {
-            res.status(201).json({ fullname, email, password });
+            res.status(201).json({
+              msg: "registrasi berhasil!",
+              data: { fullname, email, password },
+            });
           })
           .catch((err) => {
             console.log(err);
@@ -57,7 +60,7 @@ const userController = {
         httpOnly: true,
         maxAge: 24 * 60 * 60 * 1000,
       });
-      res.status(200).json({ fullname, email, accessToken });
+      res.status(200).json({ user, accessToken });
     } catch (error) {
       res.status(400).json({ msg: "email tidak ditemukan!", errors: error });
       console.log(error);

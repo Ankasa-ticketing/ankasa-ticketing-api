@@ -36,7 +36,8 @@ const ticketModel = {
         detail_tickets.refundable, detail_tickets.reschedule 
       FROM tickets
       INNER JOIN airlines ON tickets.airline_id = airlines.id
-      INNER JOIN detail_tickets ON tickets.id = detail_tickets.ticket_id`,
+      INNER JOIN detail_tickets ON tickets.id = detail_tickets.ticket_id
+      ORDER BY tickets.id DESC`,
         (err, result) => {
           if (err) reject(err);
           resolve(result.rows);

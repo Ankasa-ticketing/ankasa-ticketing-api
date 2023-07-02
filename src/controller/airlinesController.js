@@ -29,8 +29,11 @@ const airlinesController = {
       await airlinesModel.insert(name, presignedUrl);
 
       res.status(201).json({
-        name,
-        url: presignedUrl,
+        msg: "berhasil menambahkan data",
+        data: {
+          name,
+          url: presignedUrl,
+        },
       });
     } catch (error) {
       res.status(400).json({ msg: "gagal tambah data!", error });
@@ -40,9 +43,18 @@ const airlinesController = {
   editAirlines: async (req, res) => {
     const id = req.params.id;
     const { name } = req.body;
-    const image = req.file.filename;
+    const file = req.file.path;
+
     try {
-      await airlinesModel.update(id, name, image);
+      const image_url = generateRandomString(10);
+      uploadFile(file, `airlines/${image_url}`);
+
+      const presignedUrl = await MinioClient.presignedGetObject(
+        "ankasa-ticketing",
+        `airlines/${image_url}`
+      );
+
+      await airlinesModel.update(id, name, presignedUrl);
       res.status(200).json({ msg: "berhasil memperbaharui airlines" });
     } catch (error) {
       res.json(error);

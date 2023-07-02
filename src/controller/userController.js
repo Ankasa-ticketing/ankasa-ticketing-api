@@ -43,7 +43,7 @@ const userController = {
     try {
       const user = await userModel.findByEmail(email);
       const match = await bcrypt.compare(password, user.password);
-      console.log(match);
+      // console.log(match);
 
       if (!match) return res.status(400).json({ msg: "password salah!" });
 
@@ -70,7 +70,7 @@ const userController = {
   editProfile: async (req, res) => {
     const { fullname, email, phone, city, address, post_code } = req.body;
 
-    const token = req.cookies.accesstoken;
+    const token = req.cookies.accessToken;
     const user = jwt.decode(token, { complete: true });
 
     try {

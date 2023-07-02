@@ -7,7 +7,7 @@ const ticketsController = require("../controller/ticketsController");
 const { fetchAirlines, insertAirlines, deleteAirlines, editAirlines } =
   airlinesController;
 const { fetchUsers, register, login, editProfile, editPhoto } = userController;
-const { getTickets, postTicket } = ticketsController;
+const { getTickets, postTicket, getTicket } = ticketsController;
 const { validate } = require("../middleware/validation");
 const {
   registerSchema,
@@ -41,6 +41,7 @@ router.put("/airlines/:id", isAdmin, uploadImage.single("image"), editAirlines);
 
 // tickets
 router.get("/tickets", verifyToken, getTickets);
+router.get("/tickets/:id", verifyToken, getTicket);
 router.post("/tickets", isAdmin, postTicket);
 
 module.exports = { router };

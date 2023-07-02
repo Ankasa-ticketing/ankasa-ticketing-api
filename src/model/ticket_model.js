@@ -45,6 +45,25 @@ const ticketModel = {
       );
     });
   },
+
+  find: (id) => {
+    return new Promise((resolve, reject) => {
+      DB.query(
+        `SELECT tickets.*,
+        airlines.name, airlines.image,
+        detail_tickets.luggage, detail_tickets.wifi, detail_tickets.meal, detail_tickets.transit,
+        detail_tickets.refundable, detail_tickets.reschedule 
+      FROM tickets
+      INNER JOIN airlines ON tickets.airline_id = airlines.id
+      INNER JOIN detail_tickets ON tickets.id = detail_tickets.ticket_id
+      WHERE tickets.id = ${id}`,
+        (err, result) => {
+          if (err) reject(err);
+          resolve(result.rows[0]);
+        }
+      );
+    });
+  },
 };
 
 module.exports = { ticketModel };

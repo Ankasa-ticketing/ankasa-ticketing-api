@@ -1,10 +1,15 @@
-const DB = require("./src/config/postgres");
+const DB = require("../config/postgres");
 
 const bookingModel = {
   findAll: (id) => {
     return new Promise((resolve, reject) => {
       DB.query(
-        `SELECT * FROM bookings WHERE user_id = ${id}`,
+        `
+        SELECT bookings.*, tickets.departure_time, tickets.created_at
+        FROM bookings
+        JOIN tickets ON bookings.ticket_id = tickets.id
+        WHERE user_id = ${id}
+        `,
         (err, result) => {
           if (err) reject(err);
           resolve(result.rows);
@@ -36,17 +41,4 @@ const bookingModel = {
   },
 };
 
-try {
-  bookingModel.insert({
-    ticket_id: 24,
-    user_id: 10,
-    code: "asdas",
-    terminal: "A",
-    gate: 122,
-    insurance: false,
-    paymentStatus: "cek",
-  });
-  console.log("berhasil");
-} catch (error) {
-  console.log(error);
-}
+module.exports = bookingModel;

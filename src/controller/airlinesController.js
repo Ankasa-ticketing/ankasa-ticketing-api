@@ -1,7 +1,6 @@
 const { generateRandomString } = require("../helper/generate_random_string");
 const airlinesModel = require("../model/airlines_model");
 const { uploadFile, MinioClient } = require("../utils/object_storage");
-// const jwt = require("jsonwebtoken");
 
 const airlinesController = {
   fetchAirlines: async (req, res) => {

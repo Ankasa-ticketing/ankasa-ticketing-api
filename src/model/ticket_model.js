@@ -27,22 +27,27 @@ const ticketModel = {
     });
   },
 
-  findAll: () => {
+  findAll: (search = "", airline = "", perPage = 5, page = 1) => {
+    const offset = (page - 1) * perPage;
+    let query = `SELECT tickets.*,
+    airlines.name, airlines.image,
+    detail_tickets.luggage, detail_tickets.wifi, detail_tickets.meal, detail_tickets.transit,
+    detail_tickets.refundable, detail_tickets.reschedule 
+    FROM tickets
+    INNER JOIN airlines ON tickets.airline_id = airlines.id
+    INNER JOIN detail_tickets ON tickets.id = detail_tickets.ticket_id
+    `;
+
+    if (search !== "")
+      query += `WHERE tickets.destination LIKE '%${search}%' OR tickets.from_location LIKE '%${search}%'`;
+    if (airline !== "") query += `WHERE tickets.airline_id = '${airline}'`;
+    if (perPage !== "" && page !== "")
+      query += `limit ${perPage} offset ${offset}`;
     return new Promise((resolve, reject) => {
-      DB.query(
-        `SELECT tickets.*,
-        airlines.name, airlines.image,
-        detail_tickets.luggage, detail_tickets.wifi, detail_tickets.meal, detail_tickets.transit,
-        detail_tickets.refundable, detail_tickets.reschedule 
-      FROM tickets
-      INNER JOIN airlines ON tickets.airline_id = airlines.id
-      INNER JOIN detail_tickets ON tickets.id = detail_tickets.ticket_id
-      ORDER BY tickets.id DESC`,
-        (err, result) => {
-          if (err) reject(err);
-          resolve(result.rows);
-        }
-      );
+      DB.query(query, (err, result) => {
+        if (err) reject(err);
+        resolve(result.rows);
+      });
     });
   },
 

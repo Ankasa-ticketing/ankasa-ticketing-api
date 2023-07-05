@@ -3,10 +3,11 @@ const { ticketModel } = require("../model/ticket_model");
 
 const ticketsController = {
   getTickets: async (req, res) => {
+    const { search, airline, page, limit } = req.query;
     try {
-      const response = await ticketModel.findAll();
+      const response = await ticketModel.findAll(search, airline, limit, page);
 
-      res.status(200).json({ data: response });
+      res.status(200).json({ message: "list tiket", data: response });
     } catch (error) {
       res.status(500).json({ error });
     }

@@ -15,7 +15,7 @@ const ticketsController = {
 
   getTicket: async (req, res) => {
     try {
-      const response = await ticketModel.find();
+      const response = await ticketModel.find(1);
       res.status(200).json({ data: response });
     } catch (error) {
       res.status(500).json({ error });

@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 const generateRandomCode = require("../helper/generate_random_code");
-const { insert, findAll } = require("../model/booking_model");
+const { insert, findAll, find } = require("../model/booking_model");
 
 const bookingController = {
   insertBooking: async (req, res) => {
@@ -34,11 +34,22 @@ const bookingController = {
     const user = jwt.decode(token, { complete: true });
     try {
       const response = await findAll(user.payload.id);
-      res.status(201).json({ message: "data booking", data: response });
+      res.status(200).json({ message: "data bookings", data: response });
     } catch (error) {
       res.json({ message: "gagal booking", error });
     }
   },
+
+  detailBooking: async (req, res) => {
+    const { id } = req.params
+
+    try {
+      const response = await find(id)
+      res.status(200).json({ message: "data booking", data: response });
+    } catch (error) {
+      res.json({ message: "gagal booking", error });
+    }
+  }
 };
 
 module.exports = bookingController;

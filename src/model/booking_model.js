@@ -5,10 +5,29 @@ const bookingModel = {
     return new Promise((resolve, reject) => {
       DB.query(
         `
-        SELECT bookings.*, tickets.departure_time, tickets.created_at
+        SELECT bookings.*, tickets.*, tickets.created_at, airlines.name, airlines.image
         FROM bookings
         JOIN tickets ON bookings.ticket_id = tickets.id
+        JOIN airlines ON tickets.airline_id = airlines.id
         WHERE user_id = ${id}
+        `,
+        (err, result) => {
+          if (err) reject(err);
+          resolve(result.rows);
+        }
+      );
+    });
+  },
+
+  find: (id) => {
+    return new Promise((resolve, reject) => {
+      DB.query(
+        `
+        SELECT bookings.*, tickets.*, tickets.created_at, airlines.name, airlines.image
+        FROM bookings
+        JOIN tickets ON bookings.ticket_id = tickets.id
+        JOIN airlines ON tickets.airline_id = airlines.id
+        WHERE bookings.id = ${id}
         `,
         (err, result) => {
           if (err) reject(err);

@@ -9,7 +9,7 @@ const { fetchAirlines, insertAirlines, deleteAirlines, editAirlines } =
   airlinesController;
 const { fetchUsers, register, login, editProfile, editPhoto } = userController;
 const { getTickets, postTicket, getTicket } = ticketsController;
-const { insertBooking, fecthMyBooking } = bookingController;
+const { insertBooking, fecthMyBooking, detailBooking } = bookingController;
 const { validate } = require("../middleware/validation");
 const {
   registerSchema,
@@ -48,6 +48,7 @@ router.post("/tickets", isAdmin, postTicket);
 
 // booking
 router.get("/bookings", verifyToken, fecthMyBooking);
+router.get("/bookings/:id", verifyToken, detailBooking);
 router.post("/bookings/:ticket_id", verifyToken, insertBooking);
 
 module.exports = { router };

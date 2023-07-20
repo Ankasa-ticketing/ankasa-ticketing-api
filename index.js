@@ -6,9 +6,9 @@ const { router } = require("./src/routes/index");
 const app = express();
 const helmet = require("helmet");
 
-const port = 5000;
+const port = 5001;
 
-app.use(cors({ credentials: true, origin: "http://localhost:5173" }));
+app.use(cors({ origin: "http://localhost:3001", credentials: true, }));
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(router);

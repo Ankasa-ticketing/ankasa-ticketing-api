@@ -32,11 +32,12 @@ const bookingController = {
   fecthMyBooking: async (req, res) => {
     const token = req.cookies.accessToken;
     const user = jwt.decode(token, { complete: true });
+
     try {
       const response = await findAll(user.payload.id);
       res.status(200).json({ message: "data bookings", data: response });
     } catch (error) {
-      res.json({ message: "gagal booking", error });
+      res.json({ message: "gagal mendapat data booking", error });
     }
   },
 

@@ -5,7 +5,9 @@ const bookingModel = {
     return new Promise((resolve, reject) => {
       DB.query(
         `
-        SELECT bookings.*, tickets.*, tickets.created_at, airlines.name, airlines.image
+        SELECT bookings.*, tickets.airline_id,tickets.from_location,tickets.destination, 
+        tickets.departure_time, tickets.class,tickets.price,tickets.created_at, 
+        airlines.name, airlines.image
         FROM bookings
         JOIN tickets ON bookings.ticket_id = tickets.id
         JOIN airlines ON tickets.airline_id = airlines.id
@@ -23,7 +25,9 @@ const bookingModel = {
     return new Promise((resolve, reject) => {
       DB.query(
         `
-        SELECT bookings.*, tickets.*, tickets.created_at, airlines.name, airlines.image
+        SELECT bookings.*, tickets.airline_id,tickets.from_location,tickets.destination,
+        tickets.departure_time, tickets.class,tickets.price,tickets.created_at, 
+        airlines.name, airlines.image
         FROM bookings
         JOIN tickets ON bookings.ticket_id = tickets.id
         JOIN airlines ON tickets.airline_id = airlines.id
